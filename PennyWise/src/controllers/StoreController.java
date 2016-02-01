@@ -145,22 +145,40 @@ public class StoreController {
 									@RequestParam("itemAddress") String itemAddress, @RequestParam("updatePrice") Double price, 
 									@RequestParam("removeItem") String removeItem, @RequestParam("store_name") String storeName) {
 		
-		if (removeItem.equals("false,true")) {
-			Item remove = null;
+			Item updatedItem = null;
 			for (Item item : returnList) {
 				if (item.toString().equalsIgnoreCase(itemAddress)) {
-					remove = item;
+					updatedItem = item;
 				} else continue;
 			}
-			if (remove != null && shoppingList.contains(remove)) {
-				shoppingList.remove(remove);
-			}
-			else {
+			if (updatedItem == null) {
 				for (Item item : shoppingList) {
 					if (item.toString().equalsIgnoreCase(itemAddress)) {
+						updatedItem = item;
 						shoppingList.remove(item);
 					} else continue;
 				}
+			}
+		if (removeItem.equals("false,true")) {
+			returnList.remove(updatedItem);
+			shoppingList.remove(updatedItem);
+			groceryDAO.removeItemFromStore(updatedItem);
+		}
+		else {
+			if (!storeName.trim().equals("Dont")) {
+				String[] tokens = updatedItem.getSize().split(" ");
+				if (updatedItem.getStoreSection().equalsIgnoreCase("Alcohol")) {
+					updatedItem = new AlcoholicItem(storeName.trim(), updatedItem.getStoreSection(), updatedItem.getBrand(), updatedItem.getType(), updatedItem.getPrice(), Integer.parseInt(tokens[0]), Liquid.LiquidVolume.ML);
+				}
+				groceryDAO.addItemToStore(updatedItem);
+				shoppingList.add(updatedItem);
+			}
+			if (updatedItem.getPrice() != price) {
+		
+				System.out.println("IN UPDATE PRICE");
+				System.out.println("Current Price: " + updatedItem.getPrice());
+				updatedItem.setPrice(price);
+				System.out.println("Updated Price: " + updatedItem.getPrice());
 			}
 		}
 			

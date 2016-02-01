@@ -30,7 +30,7 @@ public class AlcoholicItem implements Item, Liquid {
 		this.price = Double.parseDouble(itemVariable[3].trim());
 		this.volume = Integer.parseInt(itemVariable[4].trim());
 		setUnitMeasurement(Liquid.LiquidVolume.ML);
-		this.size = volume + unitMeasurement.toString();
+		this.size = volume + " " + unitMeasurement.toString();
 		this.storeSection = storeSection;
 		this.store = storeName;
 	}

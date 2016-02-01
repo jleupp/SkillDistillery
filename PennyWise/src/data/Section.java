@@ -9,4 +9,5 @@ public interface Section extends Comparable<Section> {
 	public String getStoreName();
 	public String getSection();
 	public void addItem(Item item);
+	public void removeItem(Item item);
 }

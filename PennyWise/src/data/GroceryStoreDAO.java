@@ -56,6 +56,14 @@ public class GroceryStoreDAO implements GroceryDAO {
 		return groceryStoreList;
 	}
 	
+	public void removeItemFromStore(Item item) {
+		for (Store store : groceryStoreList) {
+			if(item.getStore().equalsIgnoreCase(store.getStoreName())) {
+				store.removeItemFromSection(item);
+			}
+		}
+	}
+	
 	public void addItemToStore(Item item) {
 		for (Store store : groceryStoreList) {
 			if(item.getStore().equalsIgnoreCase(store.getStoreName())) {

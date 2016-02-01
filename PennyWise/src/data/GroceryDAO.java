@@ -9,4 +9,5 @@ public interface GroceryDAO {
 	public List<Item> getItemByType(String type);
 	public List<Item> getItemByBrand(String brand);
 	public void addItemToStore(Item item);
+	public void removeItemFromStore(Item item);
 }

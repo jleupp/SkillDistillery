@@ -19,6 +19,10 @@ public class AlcoholSection implements Section {
 		this.storeName = storeName;
 	}
 	
+	public void removeItem(Item item) {
+		alcoholItemList.remove(item);
+	}
+	
 	public void addItem(Item item) {
 		alcoholItemList.add(item);
 	}

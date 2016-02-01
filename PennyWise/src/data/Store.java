@@ -9,4 +9,5 @@ public interface Store extends Comparable<Store> {
 	public List<Item> getItemByType(String type);
 	public List<Item> getItemByBrand(String brand);
 	public void addItemToSection(Item item);
+	public void removeItemFromSection(Item item);
 }

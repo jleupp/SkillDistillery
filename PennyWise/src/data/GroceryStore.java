@@ -29,6 +29,15 @@ public class GroceryStore implements Store {
 		}
 	}
 	
+	public void removeItemFromSection(Item item) {
+		for (Section section : sectionList) {
+			if (item.getStoreSection().equalsIgnoreCase(section.getSection())) {
+				section.removeItem(item);
+			}
+			else continue;
+		}
+	}
+	
 	public void addItemToSection(Item item) {
 		for(Section section : sectionList) {
 			if (item.getStoreSection().equalsIgnoreCase(section.getSection())) {
