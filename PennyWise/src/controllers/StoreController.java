@@ -47,6 +47,7 @@ public class StoreController {
 		ModelAndView mv = new ModelAndView("display.jsp");
 		List<Item> itemList = groceryDAO.getItemByType(type);
 		returnList.addAll(itemList);
+		Collections.sort(itemList);
 		mv.addObject("itemList", itemList);
 		mv.addObject("method", "getItemByType");
 		for (Item item : returnList) {
@@ -67,6 +68,7 @@ public class StoreController {
 		returnList.clear();
 		ModelAndView mv = new ModelAndView("display.jsp");
 		returnList.addAll(groceryDAO.getItemByBrand(brand));
+		Collections.sort(returnList);
 		mv.addObject("itemList", returnList);
 		mv.addObject("method", "getItemByBrand");
 		for (Item item : groceryDAO.getItemByBrand(brand)) {
@@ -189,7 +191,7 @@ public class StoreController {
 		System.out.println("Item Price " + price);
 		System.out.println("Remove Item " + removeItem);
 		System.out.println("Store Name" + storeName);
-		ModelAndView mv = new ModelAndView("index.html");
+		ModelAndView mv = new ModelAndView("index.jsp");
 		return mv;
 		
 		

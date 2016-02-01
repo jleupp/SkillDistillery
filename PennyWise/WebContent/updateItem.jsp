@@ -6,12 +6,12 @@
 <head>
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Update Items</title>
+<title>Pennywise® 2016</title>
 <link rel="stylesheet" href="css/normalize.css">
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<div id="container">
+	<div id="container"> <h1>Pennywise</h1>
 			<div id="itemUpdateOuter">
 				<div class="itemUpdateInner">
 					<div id="sectionheader"><h1 class="sectionheader">Update Item</h1></div>
@@ -45,13 +45,19 @@
 					
 						</form>
 					
-					<a href="index.html">Go back to Select More Items</a>
+					<a href="index.jsp">Go back to Select More Items</a>
 				</div>
 		</div>
 		<c:choose>
-			<c:when test="${shoppingList.size()==0}">
-				<div id="emptyShoppingList">
-				hello empty list
+			<c:when test="${shoppingList.size()==0 || shoppingList.equals(null)}">
+				<div id="shoppingListOuter">
+					<div id="emptyShoppingList">
+						<div id="sectionheader"><h1 class="sectionheader">Shopping List</h1></div>
+						<div id="nothingToSee"><h2>Nothing to see here yet!</h2></div>
+						<p class="help">To get started either search for items or</p>
+						<p class="help">manually add your own.</p>
+						<p class="emptyCart"><img class="emptyCart" src="http://s17.postimg.org/fsg8dkm63/shopping_cart_empty_icon.png" /></p>
+					</div>
 				</div>
 			</c:when>
 			<c:otherwise>
