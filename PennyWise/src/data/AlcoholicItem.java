@@ -19,6 +19,7 @@ public class AlcoholicItem implements Item, Liquid {
 		this.unitMeasurement = ((Liquid.LiquidVolume)unit);
 		this.storeSection = storeSection;
 		this.store = storeName;
+		this.size = volume + " " + unitMeasurement.toString();
 		
 	}
 	public AlcoholicItem(String itemPackage, String storeSection, String storeName) {

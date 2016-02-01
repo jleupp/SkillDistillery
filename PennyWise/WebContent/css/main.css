@@ -1,0 +1,21 @@
+body {
+	font-family: 'Montserrat', sans-serif;
+}
+#container {
+	background-color: #E6E9E7;
+}
+
+#itemUpdateOuter,
+#shoppingListOuter {
+	background-color: #F8F8F8;
+}
+
+h1.sectionheader {
+	color: #77B584;
+}
+
+div #originalItem > p,
+div #updateAvailability > p,
+div #itemlist > p {
+	color: #3A3C3A;
+}

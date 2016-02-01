@@ -116,6 +116,9 @@ public class StoreController {
 		return mv;
 				
 	}
+
+	
+	
 	
 	@RequestMapping(path="∆List.do", name="update", method=RequestMethod.GET)
 	public ModelAndView modifyStoreItems(@ModelAttribute("shoppingList") List<Item> shoppingList, @ModelAttribute("requestedItemsList") List<Item> returnList, @RequestParam("update") String string) {
@@ -155,7 +158,7 @@ public class StoreController {
 				for (Item item : shoppingList) {
 					if (item.toString().equalsIgnoreCase(itemAddress)) {
 						updatedItem = item;
-						shoppingList.remove(item);
+						System.out.println("UPDATING ITEM" + updatedItem.getSize());
 					} else continue;
 				}
 			}
