@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,9 +111,67 @@ public class StoreController {
 		for (Item removalItem : removalItems) {			
 			shoppingList.remove(removalItem);
 		}
+		Collections.sort(shoppingList);
 		mv.addObject("itemList", shoppingList);
 		return mv;
 				
+	}
+	
+	@RequestMapping(path="∆List.do", name="update", method=RequestMethod.GET)
+	public ModelAndView modifyStoreItems(@ModelAttribute("shoppingList") List<Item> shoppingList, @ModelAttribute("requestedItemsList") List<Item> returnList, @RequestParam("update") String string) {
+		System.out.println(string);
+		ModelAndView mv = new ModelAndView("updateItem.jsp");
+			for (Item item : returnList) {
+				if (item.toString().equalsIgnoreCase(string)) {
+					System.out.println(string + " equals " + item.toString());
+					mv.addObject("itemUpdate", item);
+					return mv;
+				} else continue;
+			}
+			for (Item item : shoppingList) {
+				if (item.toString().equalsIgnoreCase(string)) {
+					System.out.println("MATCHED UPDATE ITEM TO ITEM IN SHOPPING LIST");
+					mv.addObject("itemUpdate", item);
+					return mv;
+				}else continue;
+			}
+		return mv;
+	}
+	
+	@RequestMapping(path="∆Item.do", name="update", method=RequestMethod.GET)
+	public ModelAndView updateItem(
+			@ModelAttribute("shoppingList") List<Item> shoppingList, 
+			@ModelAttribute("requestedItemsList") List<Item> returnList, 
+									@RequestParam("itemAddress") String itemAddress, @RequestParam("updatePrice") Double price, 
+									@RequestParam("removeItem") String removeItem, @RequestParam("store_name") String storeName) {
+		
+		if (removeItem.equals("false,true")) {
+			Item remove = null;
+			for (Item item : returnList) {
+				if (item.toString().equalsIgnoreCase(itemAddress)) {
+					remove = item;
+				} else continue;
+			}
+			if (remove != null && shoppingList.contains(remove)) {
+				shoppingList.remove(remove);
+			}
+			else {
+				for (Item item : shoppingList) {
+					if (item.toString().equalsIgnoreCase(itemAddress)) {
+						shoppingList.remove(item);
+					} else continue;
+				}
+			}
+		}
+			
+		System.out.println("ItemAddress " + itemAddress);
+		System.out.println("Item Price " + price);
+		System.out.println("Remove Item " + removeItem);
+		System.out.println("Store Name" + storeName);
+		ModelAndView mv = new ModelAndView("index.html");
+		return mv;
+		
+		
 	}
 	
 	@RequestMapping(path="addItem.do", method=RequestMethod.GET)
@@ -126,8 +185,8 @@ public class StoreController {
 			Item n = new AlcoholicItem(storeName, storeSection, brand, type, price, Integer.parseInt(tokens[0]), Liquid.LiquidVolume.ML);
 			groceryDAO.addItemToStore(n);
 			shoppingList.add(n);
-			
 		}
+		Collections.sort(shoppingList);
 		mv.addObject("itemList", shoppingList);
 		return mv;
 		
