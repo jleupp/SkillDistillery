@@ -1,12 +1,13 @@
 package data;
 
-import java.util.List;
+import java.sql.ResultSet;
 
 public interface DatabaseDAO {
 	public void setUserName(String user_name);
 	public void setPassphrase(String pw);
-	public void setQueryStatement(String query);
+	public String setQueryStatement(String query);
 	public void setDatabase(String database);
 	public void setLoginCredentials(LoginCred cred);
-	public List<DatabaseReturn> dbConnectForQuery();
+	public DatabaseReturn dbConnectForQuery();
+	public Integer dbConnectForUpdate();
 }

@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -35,45 +34,67 @@ public class CompanyDatabaseDAO implements DatabaseDAO {
 		}
 	}
 	
-	public List<DatabaseReturn> dbConnectForQuery() {
+	public Integer dbConnectForUpdate() {
 		//Establish DB Connection
 			try (Connection connection = DriverManager.getConnection(url, username, password);
-					Statement statement = connection.createStatement();
-					ResultSet results = statement.executeQuery(sqlQuery);) {
-				ResultSetMetaData meta = results.getMetaData();
-				while (results.next()) {
-					for(int i =1; i<=meta.getColumnCount(); i++) {
-						if (i ==1) {
-							System.out.println();
-						}
-						if (i>1) {
-							System.out.print("\t\t");
-						}
-						int col = meta.getColumnType(i);
-						switch (col) {
-						case Types.VARCHAR:
-						case Types.CHAR:	System.out.print(results.getString(i));
-							break;
-						case Types.SMALLINT:
-						case Types.INTEGER: System.out.print(results.getInt(i));
-							break;
-						case Types.DATE: System.out.print(results.getDate(i));
-							break;
-						default:
-							System.out.println("COLUMN TYPE NOT MATCHED:" + meta.getColumnType(i));
-							break;
-						}
+					Statement statement = connection.createStatement();) {
+				Integer numbRowsUpdated = statement.executeUpdate(sqlQuery);
+				
+				return numbRowsUpdated;
+				} catch (SQLException e) {
+					System.out.println("Caught a grenade...It has SQL written all over it");
+					SQLUtils.printSQLErrors(e);
+					//TODO FIND A WAY TO SEND ERROR TEXT BACK TO GOOEY
+					return null;
+					//TODO FIND A WAY TO SEND ERROR TEXT BACK TO GOOEY
+				}		
+	}
+	
+	public DatabaseReturn dbConnectForQuery() {
+		//Establish DB Connection
+		try (Connection connection = DriverManager.getConnection(url, username, password);
+				Statement statement = connection.createStatement();
+				ResultSet results = statement.executeQuery(sqlQuery);) {
+			ResultSetMetaData meta = results.getMetaData();
+			
+			System.out.println("IN DAO BEFORE DATABASE RETURN OBJ CREATE  ");
+			DatabaseReturn dbReturn = new CompanyDatabaseReturn(results);
+			System.out.println("IN DAO BEFORE DATABASE AFTER OBJ CREATE");
+			results.first();
+			while (results.next()) {
+				for(int i =1; i<=meta.getColumnCount(); i++) {
+					if (i ==1) {
+						System.out.println();
+					}
+					if (i>1) {
+						System.out.print("\t\t");
+					}
+					int col = meta.getColumnType(i);
+					switch (col) {
+					case Types.VARCHAR:
+					case Types.CHAR:	System.out.print(results.getString(i));
+					break;
+					case Types.SMALLINT:
+					case Types.INTEGER: System.out.print(results.getInt(i));
+					break;
+					case Types.DATE: System.out.print(results.getDate(i));
+					break;
+					default:
+						System.out.println("COLUMN TYPE NOT MATCHED:" + meta.getColumnType(i));
+						break;
 					}
 				}
-				
-			} catch (SQLException e) {
-				System.out.println("Caught a grenade...It has SQL written all over it");
-				SQLUtils.printSQLErrors(e);
-				//TODO FIND A WAY TO SEND ERROR TEXT BACK TO GOOEY
 			}
+			System.out.println();
+			return dbReturn;
 			
-		
-		return null;
+		} catch (SQLException e) {
+			System.out.println("Caught a grenade...It has SQL written all over it");
+			SQLUtils.printSQLErrors(e);
+			//TODO FIND A WAY TO SEND ERROR TEXT BACK TO GOOEY
+			return null;
+			//TODO FIND A WAY TO SEND ERROR TEXT BACK TO GOOEY
+		}		
 	}
 	
 	public void setLoginCredentials(LoginCred cred) {
@@ -94,8 +115,9 @@ public class CompanyDatabaseDAO implements DatabaseDAO {
 		CompanyDatabaseDAO.url = "jdbc:mysql://localhost:3306/" + db;
 	}
 	
-	public void setQueryStatement(String query) {
+	public String setQueryStatement(String query) {
 		this.sqlQuery = query;
+		return sqlQuery;
 	}
 	
 }
